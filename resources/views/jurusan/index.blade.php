@@ -11,49 +11,47 @@
     <div class="col-12 col-md-12 col-lg-12">
         <div class="card">
           <div class="card-header">
-            <form method="GET" class="form-inline">
+            <form method="GET" action="{{url('jurusan/search')}}" class="form-inline">
               <div class="form-group">
-                <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request()->get('search') }}">
+                <input type="text" name="search" class="form-control" placeholder="Search">
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary">Cari</button>
               </div>
             </form>
-            <a href="{{ route('jurusan.index') }}" class="pull-right">
-              <button type="button" class="btn btn-info">All Data</button>
+            <a href="{{url('jurusan')}}" class="pull-right">
+              <button type="button" class="btn btn-info">Semua Data</button>
             </a>
           </div>
           <div class="card-header">
-            <a href="{{ route('jurusan.create') }}">
-              <button type="button" class="btn btn-primary">Add New</button>
+            <a href="{{url('jurusan/tambahJurusan')}}">
+              <button type="button" class="btn btn-primary">Tambah Jurusan</button>
             </a>
           </div>
           <div class="card-body">
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Fakultas</th>
-                  <th scope="col">Action</th>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama Jurusan</th>
+                  <th scope="col">Nama Fakultas</th>
+                  <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-               @forelse($data as $jurusan)
+               @forelse($data as $key => $j)
                 <tr>
-                  <td></td>
-                  <td>{{ $jurusan->name }}</td>
-                  <td>{{ $jurusan->fakultas->name }}</td>
+                  <td>{{ $data->firstItem()+$key }}</td>
+                  <td>{{ $j->nama_jurusan}}</td>
+                  <td>@foreach($fakultas as $f)
+                          @if($f->id == $j->id_fakultas)
+                              {{ $f->nama_fakultas }}
+                          @endif
+                      @endforeach</td>
                   <td>
-                    <a href="{{ route('jurusan.edit', ['id' => $jurusan->id]) }}">
-                      <button type="button" class="btn btn-sm btn-info">Edit</button>
-                    </a>
-                   <a href="{{ route('jurusan.delete', ['id' => $jurusan->id]) }}"
-                    onclick="return confirm('Delete data?');" 
-                    >
-                      <button type="button" class="btn btn-sm btn-danger">Hapus</button>
-                    </a>
-                   </td>
+                    <a href="{{url('jurusan/'.$j->id.'/edit')}}" class="btn btn-warning btn-sm">EDIT</a>
+                    <a href="{{url('jurusan/'.$j->id.'/delete')}}" class="btn btn-danger btn-sm">HAPUS  </a>
+                  </td>
                 </tr>
                @empty
                 <tr>
@@ -62,6 +60,7 @@
                 @endforelse
               </tbody>
             </table>
+            <div class="pull-right">{{$data->links()}}</div>
           </div>
           <div class="card-footer text-right">
             <nav class="d-inline-block">

@@ -1,7 +1,9 @@
 	<section id="header">
 
 		<!-- * * * * * * * * * * * * * * * * * * * * * * *
+
 			Top Bar & Menu (#nav)
+
 		* * * * * * * * * * * * * * * * * * * * * * * * -->
 		<div class="topbar">
 			<div class="container">

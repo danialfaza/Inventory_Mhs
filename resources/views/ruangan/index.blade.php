@@ -4,7 +4,7 @@
 <section class="section">
   
   <div class="section-header">
-    <h1>Fakultas</h1>
+    <h1>Ruangan</h1>
   </div>
 
   <div class="section-body">
@@ -19,32 +19,39 @@
                 <button type="submit" class="btn btn-primary">Cari</button>
               </div>
             </form>
-            <a href="fakultas" class="pull-right">
+            <a href="{{url('ruangan')}}" class="pull-right">
               <button type="button" class="btn btn-info">Semua Data</button>
             </a>
           </div>
-          <a href="{{url('fakultas/tambahFakultas')}}">
           <div class="card-header">
-              <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Fakultas</button>
+            <a href="{{url('ruangan/tambahRuangan')}}">
+              <button type="button" class="btn btn-primary">Tambah Ruangan</button>
+            </a>
           </div>
-          </a>
           <div class="card-body">
             <table class="table table-bordered">
               <thead>
                 <tr>
                   <th scope="col">No</th>
-                  <th scope="col">Nama Fakultas</th>
+                  <th scope="col">Nama Jurusan</th>
+                  <th scope="col">Nama Ruangan</th>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-               @forelse($fakultas as $key => $f)
+               @forelse($ruangan as $key => $r)
                 <tr>
-                  <td>{{ $fakultas->firstItem()+$key }}</td>
-                  <td>{{ $f->nama_fakultas}}</td>
+                  <td>{{ $ruangan->firstItem()+$key }}</td>
+                  <td>@foreach($jurusan as $j)
+                          @if($j->id == $r->id_jurusan)
+                              {{ $j->nama_jurusan }}
+                          @endif
+                      @endforeach</td>
+    
+                  <td>{{ $r->nama_ruangan }}</td>
                   <td>
-                    <a href="{{url('fakultas/'.$f->id.'/edit')}}" class="btn btn-warning btn-sm">EDIT</a>
-                    <a href="{{url('fakultas/'.$f->id.'/delete')}}" class="btn btn-danger btn-sm">HAPUS</a> 
+                    <a href="{{url('ruangan/'.$r->id.'/edit')}}" class="btn btn-warning btn-sm">EDIT</a>
+                    <a href="{{url('ruangan/'.$r->id.'/delete')}}" class="btn btn-danger btn-sm">HAPUS  </a>
                   </td>
                 </tr>
                @empty
@@ -54,7 +61,7 @@
                 @endforelse
               </tbody>
             </table>
-            <div class="pull-right">{{$fakultas->links()}}</div>
+            <div class="pull-right">{{$ruangan->links()}}</div>
           </div>
           <div class="card-footer text-right">
             <nav class="d-inline-block">

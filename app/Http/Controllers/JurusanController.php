@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Jurusan;
 use App\Fakultas;
-
+use DB;
 
 class JurusanController extends Controller
 {
-    // Admin Panel
-
-    public function search(Request $request){
-    	$fakultas = Fakultas::all();
+    public function search(Request $request)
+    {
+        $fakultas = Fakultas::all();
         $search = $request->search;
-        $searchFakultas = DB::table('Fakultas')
-        					->select('id')
+        $searchFakultas = DB::table('fakultas')
+                            ->select('id')
                             ->where('nama_fakultas', 'LIKE', '%'.$search.'%')
                             ->first();
 
@@ -23,42 +22,56 @@ class JurusanController extends Controller
             $src = get_object_vars($searchFakultas);
             $data = DB::table('Jurusan')->where('id_fakultas', '=', $src)->paginate(10);
 
-            return view('Jurusan.index', compact('data','fakultas'));
+            return view('jurusan.index', compact('data','fakultas'));
         }
     }
 
     public function index(Request $request){
-    	$data = Jurusan::paginate(10);
+        $data = Jurusan::paginate(10);
         $fakultas = Fakultas::all();
 
-        return view('Jurusan.index', compact('data','fakultas'));
+        return view('jurusan.index', compact('data','fakultas'));
     }
 
-    public function add(Request $request){
-    	$jurusan = new Jurusan;
-    	$jurusan->id_fakultas = $request->id_fakultas;
-    	$jurusan->nama_jurusan = $request->nama_jurusan;
-    	$jurusan->save();
-    	return redirect('/jurusan');
-    }
-
-    public function delete($id){
-        $jurusan = Jurusan::findOrFail($id);
-        $jurusan->delete();
-        return redirect('/jurusan');
-    }
-
-    public function edit($id){
-        $jurusan = Jurusan::findOrFail($id);
+    public function tambahJurusan()
+    {
         $fakultas = Fakultas::all();
-        return view('Jurusan.edit', compact('jurusan','fakultas'));
+        return view ('jurusan.create', compact('fakultas'));
     }
 
-    public function update($id, Request $request){
+    public function createJurusan(Request $request)
+    {
+        Jurusan::create([
+            'nama_jurusan' => $request->nama_jurusan,
+            'id_fakultas' => $request->id_fakultas
+        ]);
+
+        return redirect('jurusan');
+    }
+
+    public function editJurusan($id)
+    {
+        $fakultas = Fakultas::all();
+        $jurusan = Jurusan::find($id);
+
+        return view('jurusan.edit', compact('jurusan', 'fakultas'));
+    }
+
+    public function updateJurusan($id, Request $request)
+    {
         $jurusan = Jurusan::find($id);
         $jurusan->id_fakultas = $request->id_fakultas;
         $jurusan->nama_jurusan = $request->nama_jurusan;
         $jurusan->save();
-        return redirect('/jurusan');
+
+        return redirect('jurusan');
+    }
+
+    public function deleteJurusan($id)
+    {
+        $jurusan = Jurusan::find($id);
+        $jurusan->delete($jurusan);
+
+        return redirect('jurusan');
     }
 }

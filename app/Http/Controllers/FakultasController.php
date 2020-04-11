@@ -7,83 +7,53 @@ use App\Fakultas;
 
 class FakultasController extends Controller
 {
-
     public function index(Request $request)
     {
         //pagination
         // numbering
-        $data = Fakultas::when($request->search, function($query) use($request){
-            $query->where('nama_fakultas', 'LIKE', '%'.$request->search.'%');
-        })->paginate(10);
+        $fakultas = Fakultas::when($request->search, function($query) use($request){
+            $query->where('nama_fakultas', 'LIKE', '%'.$request->search. '%');
+        })->paginate(5);
 
-        return view('fakultas.index', compact('data'));
+        return view('fakultas.index', compact('fakultas'));
     }
 
-
-    public function create()
+    public function tambahFakultas()
     {
-    	$fakultas = new Fakultas;
-    	$fakultas->nama_fakultas = $request->nama_fakultas;
-    	$fakultas->save();
-        return view('/fakultas');
+        return view ('fakultas.create');
     }
 
-  public function delete($id){
-        $fakultas = Fakultas::findOrFail($id);
-        $fakultas->delete();
-        return redirect('fakultas.index');
-    }
-
-    public function store(Request $request)
+    public function createFakultas(Request $request)
     {
-        Fakultas::create(['name' => $request->name]);
+        Fakultas::create([
+            'nama_fakultas' => $request->nama_fakultas
+        ]);
 
-        return redirect()->route('fakultas.index');
+        return redirect('fakultas');
     }
 
-   
-    public function show($id)
+    public function editFakultas($id)
     {
-        //
+        $fakultas = Fakultas::find($id);
+
+        return view('fakultas.edit', compact('fakultas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function updateFakultas($id, Request $request)
     {
-        $data = Fakultas::find($id);
+        $fakultas = Fakultas::find($id);
+        $fakultas->nama_fakultas = $request->nama_fakultas;
+        $fakultas->save();
 
-        return view('fakultas.edit', compact('data'));
+        return redirect('fakultas');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function deleteFakultas($id)
     {
-        Fakultas::whereId($id)->update(['name' => $request->name]);
+        $fakultas = Fakultas::find($id);
+        $fakultas->delete($fakultas);
 
-        return redirect()->route('fakultas.index');
+        return redirect('fakultas');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function delete($id)
-    {
-        Fakultas::whereId($id)->delete();
-
-        return redirect()->route('fakultas.index');
-    }
 }
