@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth','roleCheck:admin']], function()
 	Route::get('/fakultas/{id}/edit', 'FakultasController@editFakultas');
 	Route::post('/fakultas/{id}/update', 'FakultasController@updateFakultas');
 	Route::get('/fakultas/{id}/delete', 'FakultasController@deleteFakultas');
+	
 
 	Route::get('/jurusan','JurusanController@index');
 	Route::get('/jurusan/search', 'JurusanController@search');
@@ -56,6 +57,7 @@ Route::group(['middleware' => ['auth','roleCheck:admin,staff']], function()
 	Route::get('/barang/{id}/edit', 'BarangController@editBarang');
 	Route::post('/barang/{id}/update', 'BarangController@updateBarang');
 	Route::get('/barang/{id}/delete', 'BarangController@deleteBarang');
+	Route::get('/barang/export_excel','BarangController@export_excel');
 });
 
 ?>
