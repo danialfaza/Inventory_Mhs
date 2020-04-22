@@ -17,11 +17,11 @@ class AuthController extends Controller
     		return redirect('/dashboard');
     	}
     	// Message
-    	return redirect('/login')->with('errors', 'Username atau Password anda Salah!');
+    	return redirect('/')->with('errors', 'Username atau Password anda Salah!');
     }
 
     public function logout(){
     	Auth::logout();
-    	return redirect('/login');
+    	return redirect('/');
     }
 }

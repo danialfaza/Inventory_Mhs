@@ -28,13 +28,29 @@ class BarangController extends Controller
     }
 
     public function createBarang(Request $request){
+
+         $this->validate($request, [
+            'id_ruangan' => 'required|max:255',
+            'total' => 'required',
+            'rusak' => 'required',
+            'gambar' => 'required'
+        ]);
+
+        $upgambar = 'barang-'.date('Ymdhis').'.'.$request->gambar->getClientOriginalExtension();
+        $request->gambar->move('img/', $upgambar);
+
+    
     	$barang = new Barang;
     	$barang->id_ruangan = $request->id_ruangan;
     	$barang->nama_barang = $request->nama_barang;
     	$barang->total = $request->total;
     	$barang->broken = $request->rusak;
+        $barang->gambar =  $upgambar;
     	$barang->created_by = $request->created_by;
-    	$barang->save();
+    	
+        $barang->save();
+
+        
     	return redirect('/barang');
     }
 
@@ -51,6 +67,14 @@ class BarangController extends Controller
     }
 
     public function updateBarang($id, Request $request){
+
+         $this->validate($request, [
+            'id_ruangan' => 'required|max:255',
+            'total' => 'required',
+            'rusak' => 'required',
+            'gambar' => 'required'
+        ]);
+
         $barang = Barang::find($id);
         $barang->id_ruangan = $request->id_ruangan;
         $barang->nama_barang = $request->nama_barang;
@@ -58,7 +82,13 @@ class BarangController extends Controller
         $barang->broken = $request->rusak;
         $barang->created_by = $request->created_by;
         $barang->updated_by = $request->updated_by;
+        if( $request->gambar){
+            $upgambar = 'barang-'.date('Ymdhis').'.'.$request->gambar->getClientOriginalExtension();
+            $request->gambar->move('img/', $upgambar);
+            $barang->gambar = $upgambar;
+        }
         $barang->save();
+        
         return redirect('/barang');
     }
 }

@@ -19,6 +19,18 @@
               </button>
           </a>
           </div>
+           @if(count($errors) > 0)
+    <div class="card-body">
+      <div class="alert alert-danger">
+          Update Error
+          <ul>
+              @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+    </div>
+  @endif
           <div class="card-body">
             <form action="{{ url('barang/createBarang') }}" method="POST" enctype="multipart/form-data">
               @csrf
@@ -41,6 +53,10 @@
               <div class="form-group">
                 <label>Barang Rusak</label>
                 <input type="number" min="0" name="rusak" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Gambar</label>
+                <input type="file" name="gambar" class="form-control">
               </div>
               <input type="hidden" name="created_by" class="form-control" value="{{ auth()->user()->id }}">
               <div class="form-group">
