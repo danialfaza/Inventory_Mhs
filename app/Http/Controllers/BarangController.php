@@ -38,7 +38,6 @@ class BarangController extends Controller
 
         $upgambar = 'barang-'.date('Ymdhis').'.'.$request->gambar->getClientOriginalExtension();
         $request->gambar->move('img/', $upgambar);
-
     
     	$barang = new Barang;
     	$barang->id_ruangan = $request->id_ruangan;

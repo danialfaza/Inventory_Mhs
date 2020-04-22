@@ -11,6 +11,7 @@ use App\User;
 
 class HalamanController extends Controller
 {
+    
         public function index()
     {
     	
