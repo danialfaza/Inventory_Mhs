@@ -13,6 +13,11 @@
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
   <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}"> -->
+
+   <link rel="apple-touch-icon" type="text/css" href="images/apple-touch-icon.png">
+
+    @laravelPWA
+    
 </head>
 
 <body>
